@@ -1,28 +1,5 @@
-version: '3.7'
-
+version: "3"
 services:
-  main:
-    container_name: main
-    build:
-      context: .
-      target: development
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    ports:
-      - 3000:3000
-      - 9229:9229
-    command: npm run start:dev
-    networks:
-      - webnet
-    depends_on:
-      #      - redis
-      - postgres
-#  redis:
-#    container_name: redis
-#    image: redis:5
-#    networks:
-#      - webnet
   postgres:
     container_name: postgres
     image: postgres:latest
@@ -33,7 +10,7 @@ services:
     env_file:
       - docker.env
     networks:
-      - webnet
+      - postgres
 
   pgadmin:
     links:
@@ -47,7 +24,8 @@ services:
     env_file:
       - docker.env
     networks:
-      - webnet
+      - postgres
+
 networks:
-  webnet:
+  postgres:
     driver: bridge
