@@ -26,7 +26,7 @@ export class UserService {
     });
     if (userByEmail || userByUsername) {
       throw new HttpException(
-        'Email or Username ara taken',
+        'Email or Username are taken',
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }
