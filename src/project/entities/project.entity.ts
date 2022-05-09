@@ -14,7 +14,7 @@ export class Project {
   @Column({ nullable: true })
   avatar: string;
 
-  @Column({ nullable: true })
+  @Column({ default: '' })
   notes: string;
 
   //   client_id
