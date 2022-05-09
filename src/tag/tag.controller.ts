@@ -11,8 +11,8 @@ import {
   Post,
   ValidationPipe,
 } from '@nestjs/common';
-import { CreateTagDto } from './dto/createTag.dto';
-import { UpdateTagDto } from './dto/updateTag.dto';
+import { CreateTagDto } from './dto/create-tag.dto';
+import { UpdateTagDto } from './dto/update-tag.dto';
 import { TagService } from './tag.service';
 
 @Controller('/tags')
