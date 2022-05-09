@@ -7,6 +7,7 @@ import ormconfig from '@app/ormconfig';
 import { UserModule } from '@app/user/user.module';
 import { AuthMiddleware } from './user/middlewares/auth.middleware';
 import { TimespanModule } from './timespan/timespan.module';
+import { ClientModule } from './client/client.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { TimespanModule } from './timespan/timespan.module';
     TagModule,
     UserModule,
     TimespanModule,
+    ClientModule,
   ],
   controllers: [AppController],
   providers: [AppService],
