@@ -9,6 +9,7 @@ import { AuthMiddleware } from './user/middlewares/auth.middleware';
 import { TimespanModule } from './timespan/timespan.module';
 import { ClientModule } from './client/client.module';
 import { ProjectModule } from './project/project.module';
+import { TeamModule } from './team/team.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ProjectModule } from './project/project.module';
     TimespanModule,
     ClientModule,
     ProjectModule,
+    TeamModule,
   ],
   controllers: [AppController],
   providers: [AppService],
