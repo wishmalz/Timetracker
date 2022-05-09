@@ -10,6 +10,7 @@ import { TimespanModule } from './timespan/timespan.module';
 import { ClientModule } from './client/client.module';
 import { ProjectModule } from './project/project.module';
 import { TeamModule } from './team/team.module';
+import { RoleModule } from './role/role.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { TeamModule } from './team/team.module';
     ClientModule,
     ProjectModule,
     TeamModule,
+    RoleModule,
   ],
   controllers: [AppController],
   providers: [AppService],
