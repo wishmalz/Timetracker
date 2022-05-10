@@ -1,4 +1,4 @@
-import { Column, Double, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'roles' })
 export class RoleEntity {
@@ -9,8 +9,8 @@ export class RoleEntity {
   name: string;
 
   @Column()
-  rate_inside: Double;
+  rate_inside: number;
 
   @Column()
-  rate_outside: Double;
+  rate_outside: number;
 }
