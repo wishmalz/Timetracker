@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 
 @Entity({ name: 'timespans' })
-export class Timespan {
+export class TimespanEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
