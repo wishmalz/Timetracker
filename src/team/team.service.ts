@@ -1,26 +1,55 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
+import { TeamEntity } from './entities/team.entity';
 
 @Injectable()
 export class TeamService {
-  create(createTeamDto: CreateTeamDto) {
-    return 'This action adds a new team';
+  constructor(
+    @InjectRepository(TeamEntity)
+    private readonly teamRepository: Repository<TeamEntity>,
+  ) {}
+
+  async create(createTeamDto: CreateTeamDto) {
+    const teamByName = await this.teamRepository.findOne({
+      name: createTeamDto.name,
+    });
+    if (teamByName) {
+      throw new HttpException(
+        'Team is already exist',
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+    const newTeam = new TeamEntity();
+    Object.assign(newTeam, createTeamDto);
+
+    return await this.teamRepository.save(newTeam);
   }
 
-  findAll() {
-    return `This action returns all team`;
+  async findAll(): Promise<TeamEntity[]> {
+    return await this.teamRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} team`;
+  async findOne(id: number): Promise<TeamEntity> {
+    return await this.teamRepository.findOne(id);
   }
 
-  update(id: number, updateTeamDto: UpdateTeamDto) {
-    return `This action updates a #${id} team`;
+  async update(id: number, updateTeamDto: UpdateTeamDto) {
+    const team = await this.findOne(id);
+    if (!team) {
+      throw new HttpException('Team does not exist', HttpStatus.NOT_FOUND);
+    }
+    Object.assign(team, updateTeamDto);
+    return await this.teamRepository.save(team);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} team`;
+  async remove(id: number) {
+    const team = await this.findOne(id);
+    if (!team) {
+      throw new HttpException('Team does not exist', HttpStatus.NOT_FOUND);
+    }
+    return await this.teamRepository.remove(team);
   }
 }

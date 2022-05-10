@@ -12,17 +12,9 @@ export class TagService {
     private readonly tagRepository: Repository<TagEntity>,
   ) {}
 
-  async findAll(): Promise<TagEntity[]> {
-    return await this.tagRepository.find();
-  }
-
-  async findOne(id: number): Promise<TagEntity> {
-    return await this.tagRepository.findOne(id);
-  }
-
-  async create(createTag: CreateTagDto) {
+  async create(createTagDto: CreateTagDto) {
     const tagByName = await this.tagRepository.findOne({
-      name: createTag.name,
+      name: createTagDto.name,
     });
     if (tagByName) {
       throw new HttpException(
@@ -31,17 +23,25 @@ export class TagService {
       );
     }
     const newTag = new TagEntity();
-    Object.assign(newTag, createTag);
+    Object.assign(newTag, createTagDto);
 
     return await this.tagRepository.save(newTag);
   }
 
-  async update(id: number, updateTag: UpdateTagDto) {
+  async findAll(): Promise<TagEntity[]> {
+    return await this.tagRepository.find();
+  }
+
+  async findOne(id: number): Promise<TagEntity> {
+    return await this.tagRepository.findOne(id);
+  }
+
+  async update(id: number, updateTagDto: UpdateTagDto) {
     const tag = await this.findOne(id);
     if (!tag) {
       throw new HttpException('Tag does not exist', HttpStatus.NOT_FOUND);
     }
-    Object.assign(tag, updateTag);
+    Object.assign(tag, updateTagDto);
     return await this.tagRepository.save(tag);
   }
 
