@@ -32,7 +32,7 @@ export class ClientService {
     return await this.clientRepository.find();
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<ClientEntity> {
     return await this.clientRepository.findOne(id);
   }
 

@@ -19,6 +19,11 @@ import { TagService } from './tag.service';
 export class TagController {
   constructor(private readonly tagService: TagService) {}
 
+  @Post()
+  async create(@Body(ValidationPipe) input: CreateTagDto) {
+    return await this.tagService.create(input);
+  }
+
   @Get()
   async findAll(): Promise<{ tags: string[] }> {
     const tags = await this.tagService.findAll();
@@ -30,11 +35,6 @@ export class TagController {
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number) {
     return await this.tagService.findOne(id);
-  }
-
-  @Post()
-  async create(@Body(ValidationPipe) input: CreateTagDto) {
-    return await this.tagService.create(input);
   }
 
   @Patch(':id')

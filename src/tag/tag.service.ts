@@ -16,7 +16,7 @@ export class TagService {
     return await this.tagRepository.find();
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<TagEntity> {
     return await this.tagRepository.findOne(id);
   }
 
