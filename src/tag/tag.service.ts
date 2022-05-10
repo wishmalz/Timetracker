@@ -38,12 +38,18 @@ export class TagService {
 
   async update(id: number, updateTag: UpdateTagDto) {
     const tag = await this.findOne(id);
+    if (!tag) {
+      throw new HttpException('Tag does not exist', HttpStatus.NOT_FOUND);
+    }
     Object.assign(tag, updateTag);
     return await this.tagRepository.save(tag);
   }
 
   async remove(id: number) {
     const tag = await this.tagRepository.findOne(id);
+    if (!tag) {
+      throw new HttpException('Tag does not exist', HttpStatus.NOT_FOUND);
+    }
     return await this.tagRepository.remove(tag);
   }
 }

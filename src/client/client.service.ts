@@ -1,26 +1,56 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
+import { ClientEntity } from './entities/client.entity';
 
 @Injectable()
 export class ClientService {
-  create(createClientDto: CreateClientDto) {
-    return 'This action adds a new client';
+  constructor(
+    @InjectRepository(ClientEntity)
+    private readonly clientRepository: Repository<ClientEntity>,
+  ) {}
+
+  async create(createClientDto: CreateClientDto) {
+    const clientByName = await this.clientRepository.findOne({
+      name: createClientDto.name,
+    });
+    if (clientByName) {
+      throw new HttpException(
+        'Client is already exist',
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+    const newClient = new ClientEntity();
+    Object.assign(newClient, createClientDto);
+
+    return await this.clientRepository.save(newClient);
   }
 
-  findAll() {
-    return `This action returns all client`;
+  async findAll(): Promise<ClientEntity[]> {
+    return await this.clientRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} client`;
+  async findOne(id: number) {
+    return await this.clientRepository.findOne(id);
   }
 
-  update(id: number, updateClientDto: UpdateClientDto) {
-    return `This action updates a #${id} client`;
+  async update(id: number, updateClientDto: UpdateClientDto) {
+    const client = await this.findOne(id);
+
+    if (!client) {
+      throw new HttpException('Client does not exist', HttpStatus.NOT_FOUND);
+    }
+    Object.assign(client, updateClientDto);
+    return await this.clientRepository.save(client);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} client`;
+  async remove(id: number) {
+    const client = await this.clientRepository.findOne(id);
+    if (!client) {
+      throw new HttpException('Client does not exist', HttpStatus.NOT_FOUND);
+    }
+    return await this.clientRepository.remove(client);
   }
 }
