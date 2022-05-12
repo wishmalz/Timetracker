@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ValidationPipe,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { RoleService } from './role.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
@@ -8,27 +18,30 @@ export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
   @Post()
-  create(@Body() createRoleDto: CreateRoleDto) {
-    return this.roleService.create(createRoleDto);
+  async create(@Body(ValidationPipe) createRoleDto: CreateRoleDto) {
+    return await this.roleService.create(createRoleDto);
   }
 
   @Get()
-  findAll() {
-    return this.roleService.findAll();
+  async findAll() {
+    return await this.roleService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.roleService.findOne(+id);
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.roleService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
-    return this.roleService.update(+id, updateRoleDto);
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body(ValidationPipe) updateRoleDto: UpdateRoleDto,
+  ) {
+    return await this.roleService.update(id, updateRoleDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.roleService.remove(+id);
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    return await this.roleService.remove(id);
   }
 }

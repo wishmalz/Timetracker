@@ -21,17 +21,17 @@ export class ProjectController {
 
   @Post()
   async create(@Body(ValidationPipe) createProjectDto: CreateProjectDto) {
-    return this.projectService.create(createProjectDto);
+    return await this.projectService.create(createProjectDto);
   }
 
   @Get()
   async findAll() {
-    return this.projectService.findAll();
+    return await this.projectService.findAll();
   }
 
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.projectService.findOne(id);
+    return await this.projectService.findOne(id);
   }
 
   @Patch(':id')
@@ -39,12 +39,12 @@ export class ProjectController {
     @Param('id', ParseIntPipe) id: number,
     @Body(ValidationPipe) updateProjectDto: UpdateProjectDto,
   ) {
-    return this.projectService.update(id, updateProjectDto);
+    return await this.projectService.update(id, updateProjectDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id', ParseIntPipe) id: number) {
-    return this.projectService.remove(id);
+    return await this.projectService.remove(id);
   }
 }
