@@ -18,7 +18,10 @@ export class TimespanEntity {
   description: string;
 
   @Column()
-  duration: Double;
+  duration: number;
+
+  @Column()
+  task_id: number;
 
   @Column({ type: 'timestamp' })
   start_time: Date;

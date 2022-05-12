@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ValidationPipe,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { TimespanService } from './timespan.service';
 import { CreateTimespanDto } from './dto/create-timespan.dto';
 import { UpdateTimespanDto } from './dto/update-timespan.dto';
@@ -8,27 +18,30 @@ export class TimespanController {
   constructor(private readonly timespanService: TimespanService) {}
 
   @Post()
-  create(@Body() createTimespanDto: CreateTimespanDto) {
-    return this.timespanService.create(createTimespanDto);
+  async create(@Body(ValidationPipe) createTimespanDto: CreateTimespanDto) {
+    return await this.timespanService.create(createTimespanDto);
   }
 
   @Get()
-  findAll() {
-    return this.timespanService.findAll();
+  async findAll() {
+    return await this.timespanService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.timespanService.findOne(+id);
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.timespanService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTimespanDto: UpdateTimespanDto) {
-    return this.timespanService.update(+id, updateTimespanDto);
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body(ValidationPipe) updateTimespanDto: UpdateTimespanDto,
+  ) {
+    return await this.timespanService.update(id, updateTimespanDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.timespanService.remove(+id);
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    return await this.timespanService.remove(id);
   }
 }
