@@ -13,7 +13,7 @@ import { TimespanService } from './timespan.service';
 import { CreateTimespanDto } from './dto/create-timespan.dto';
 import { UpdateTimespanDto } from './dto/update-timespan.dto';
 
-@Controller('timespan')
+@Controller('/timespans')
 export class TimespanController {
   constructor(private readonly timespanService: TimespanService) {}
 
