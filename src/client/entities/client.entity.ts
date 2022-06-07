@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ProjectEntity } from '@app/project/entities/project.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'clients' })
 export class ClientEntity {
@@ -10,4 +11,7 @@ export class ClientEntity {
 
   @Column({ nullable: true })
   avatar: string;
+
+  @OneToMany(() => ProjectEntity, (project) => project.client)
+  projects: ProjectEntity[];
 }

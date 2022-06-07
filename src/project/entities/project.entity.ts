@@ -1,4 +1,15 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ClientEntity } from '@app/client/entities/client.entity';
+import { TeamEntity } from '@app/team/entities/team.entity';
+import { TimespanEntity } from '@app/timespan/entities/timespan.entity';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'projects' })
 export class ProjectEntity {
@@ -17,5 +28,13 @@ export class ProjectEntity {
   @Column({ default: '' })
   notes: string;
 
-  //   client_id
+  @ManyToOne(() => ClientEntity, (client) => client.projects)
+  client: ClientEntity;
+
+  @ManyToMany(() => TeamEntity, (team) => team.projects)
+  @JoinTable()
+  teams: TeamEntity[];
+
+  @OneToMany(() => TimespanEntity, (timespan) => timespan.project)
+  timespans: TimespanEntity[];
 }

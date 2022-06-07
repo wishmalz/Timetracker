@@ -1,8 +1,13 @@
+import { ProjectEntity } from '@app/project/entities/project.entity';
+import { TagEntity } from '@app/tag/entities/tag.entity';
+import { UserEntity } from '@app/user/user.entity';
 import {
   BeforeUpdate,
   Column,
   Double,
   Entity,
+  ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -39,6 +44,13 @@ export class TimespanEntity {
   updateTimestamp() {
     this.updated_at = new Date();
   }
-  //   user_id
-  // project_id
+
+  @ManyToMany(() => TagEntity, (tag) => tag.timespans)
+  tags: TagEntity[];
+
+  @ManyToOne(() => UserEntity, (user) => user.timespans)
+  user: UserEntity;
+
+  @ManyToOne(() => ProjectEntity, (project) => project.timespans)
+  project: ProjectEntity;
 }
